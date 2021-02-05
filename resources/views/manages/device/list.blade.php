@@ -13,7 +13,7 @@ Quản lý thiết bị
                     <div class="card-header">
                         <h3 class="card-title" style="line-height: 38px;">{{ $title }}</h3>
                         <button class="btn bg-gradient-success float-right px-4" type="button" data-toggle="modal"
-                            data-target="#modal" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
+                            data-target="#modal_device" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
                             Thêm</button>
                     </div>
                     <!-- /.card-header -->
@@ -23,6 +23,8 @@ Quản lý thiết bị
                                 <tr>
                                     <th>ID</th>
                                     <th>Tên máy</th>
+                                    <th>Loại máy</th>
+                                    <th>Số lượng</th>
                                     <th>Ẩn/Hiện</th>
                                     <th></th>
                                 </tr>
@@ -32,7 +34,15 @@ Quản lý thiết bị
                                 <tr class="item-{{ $device->id }}">
                                     <td>{{ $device->id }}</td>
                                     {{-- <td>{{ $device->device_id }}</td> --}}
-                                    <td class="device-name-{{ $device->id }}">{{ $device->name }}</td>
+                                    <td class="name-{{ $device->id }}">{{ $device->name }}</td>
+                                    <td class="type-{{ $device->id }}">
+                                        @for ($i = 0; $i < count(config('variables.device_type')); $i++)
+                                            @if ($i == $device->type_id)
+                                                {{ config('variables.device_type')[$i] }}
+                                            @endif
+                                        @endfor
+                                    </td>
+                                    <td class="qty-{{ $device->id }}">{{ $device->qty }}</td>
                                     <td>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input status"
@@ -44,7 +54,7 @@ Quản lý thiết bị
                                     </td>
                                     <td class="text-right">
                                         <button class="btn bg-gradient-info" type="button" data-toggle="modal"
-                                            data-target="#modal" data-action="edit" data-name="Chỉnh sửa"
+                                            data-target="#modal_device" data-action="edit" data-name="Chỉnh sửa"
                                             data-object="{{ $device }}"><i class="fas fa-pencil-alt"></i> Chỉnh
                                             sửa</button>
                                         <button class="btn bg-gradient-danger" type="button" data-toggle="modal"
@@ -58,6 +68,8 @@ Quản lý thiết bị
                                 <tr>
                                     <th>ID</th>
                                     <th>Tên máy</th>
+                                    <th>Loại máy</th>
+                                    <th>Số lượng</th>
                                     <th>Ẩn/Hiện</th>
                                     <th></th>
                                 </tr>

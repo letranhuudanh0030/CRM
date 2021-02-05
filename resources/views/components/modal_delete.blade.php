@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-url="" data-id="">>
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body">    
                 <p class="text-default text-alert">Bạn có chắc chắn muốn xóa thiết bị </p>
             </div>
             <div class="modal-footer">
@@ -25,24 +25,27 @@
         var button = $(event.relatedTarget)
         var ob = button.data('object')
         var modal = $(this)
-        var url = button.data('url')
+        modal.data('url', button.data('url'))
+        modal.data('id', ob.id)
+        var name_in_list = $('.name-' + ob.id).text();
+        modal.find('.modal-body .text-alert').html('<p>Bạn có chắc chắn muốn xóa: <b>' + name_in_list + '</b></p>')
+    })
 
-        modal.find('.modal-footer .btn-delete').click(function(){
-            axios.post(url, {
-                id: ob.id
-            })
-            .then(function(response){
-                $('#modal_remove').modal('hide')
-                $('.item-' + ob.id).fadeOut(500);
-            })
-            .catch(function(error){
-                console.log(error);
-            })
-            
+    $('.modal-footer .btn-delete').click(function(){
+        var url = $('#modal_remove').data('url')
+        var id = $('#modal_remove').data("id")
+
+        axios.post(url, {
+            id: id
         })
-
-        modal.find('.modal-body .text-alert').html('<p>Bạn có chắc chắn muốn xóa: <b>' + ob.name + '</b></p>')
-
+        .then(function(response){
+            $('#modal_remove').modal('hide')
+            $('.item-' + id).fadeOut(500);
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+        
     })
 </script>
 

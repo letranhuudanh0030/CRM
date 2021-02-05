@@ -16,10 +16,11 @@ class BranchController extends Controller
 
     public function store()
     {
-        Branch::create([
+        $branch = Branch::create([
             'name' => request()->name,
             'address' => request()->address
         ]);
+        return response($branch, 200);
     }
 
     public function update()

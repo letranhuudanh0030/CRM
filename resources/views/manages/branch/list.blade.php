@@ -13,7 +13,7 @@ Quản lý chi nhánh
                     <div class="card-header">
                         <h3 class="card-title" style="line-height: 38px;">{{ $title }}</h3>
                         <button class="btn bg-gradient-success float-right px-4" type="button" data-toggle="modal"
-                            data-target="#modal" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
+                            data-target="#modal_branch" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
                             Thêm</button>
                     </div>
                     <!-- /.card-header -->
@@ -32,8 +32,8 @@ Quản lý chi nhánh
                                 @foreach ($branchs as $branch)
                                 <tr class="item-{{ $branch->id }}">
                                     <td>{{ $branch->id }}</td>
-                                    <td class="branch-name-{{ $branch->id }}">{{ $branch->name }}</td>
-                                    <td class="branch-address-{{ $branch->id }}">{{ $branch->address }}</td>
+                                    <td class="name-{{ $branch->id }}">{{ $branch->name }}</td>
+                                    <td class="address-{{ $branch->id }}">{{ $branch->address }}</td>
                                     <td>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input status"
@@ -45,7 +45,7 @@ Quản lý chi nhánh
                                     </td>
                                     <td class="text-right">
                                         <button class="btn bg-gradient-info btn-edit" type="button" data-toggle="modal"
-                                            data-target="#modal" data-action="edit" data-name="Chỉnh sửa"
+                                            data-target="#modal_branch" data-action="edit" data-name="Chỉnh sửa"
                                             data-object="{{ $branch }}"><i class="fas fa-pencil-alt"></i> Chỉnh
                                             sửa</button>
                                         <button class="btn bg-gradient-danger" type="button" data-toggle="modal"

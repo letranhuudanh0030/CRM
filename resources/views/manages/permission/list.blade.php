@@ -13,7 +13,7 @@ Quản lý nhóm quyền người dùng
                     <div class="card-header">
                         <h3 class="card-title" style="line-height: 38px;">{{ $title }}</h3>
                         <button class="btn bg-gradient-success float-right px-4" type="button" data-toggle="modal"
-                            data-target="#modal" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
+                            data-target="#modal_permission" data-action="create" data-name="Thêm"><i class="fas fa-plus"></i>
                             Thêm</button>
                     </div>
                     <!-- /.card-header -->
@@ -31,7 +31,7 @@ Quản lý nhóm quyền người dùng
                                 @foreach ($permissions as $permission)
                                 <tr class="item-{{ $permission->id }}">
                                     <td>{{ $permission->id }}</td>
-                                    <td class="permission-name-{{ $permission->id }}">{{ $permission->name }}</td>
+                                    <td class="name-{{ $permission->id }}">{{ $permission->name }}</td>
                                     <td>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input status"
@@ -43,7 +43,7 @@ Quản lý nhóm quyền người dùng
                                     </td>
                                     <td class="text-right">
                                         <button class="btn bg-gradient-info" type="button" data-toggle="modal"
-                                            data-target="#modal" data-action="edit" data-name="Chỉnh sửa"
+                                            data-target="#modal_permission" data-action="edit" data-name="Chỉnh sửa"
                                             data-object="{{ $permission }}"><i class="fas fa-pencil-alt"></i> Chỉnh
                                             sửa</button>
                                         <button class="btn bg-gradient-danger" type="button" data-toggle="modal"

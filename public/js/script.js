@@ -106,7 +106,6 @@ $(function () {
     var id = $(this).attr('id').replace("status_", "");
     var url = $(this).attr('url');
     var status = $(this).is(':checked');
-    console.log(id, url, status);
     axios.post(url, {
       id: id,
       status: status
@@ -115,6 +114,10 @@ $(function () {
     })["catch"](function (error) {
       console.log(error);
     });
+  });
+  $('#modal_branch, #modal_change_password, #modal_remove, #modal_device, #modal_permission, #modal_task, #modal_user').on('hidden.bs.modal', function (e) {
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
   });
 });
 
@@ -127,7 +130,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\LaraCode\ver 7\timekeeping\resources\js\script.js */"./resources/js/script.js");
+module.exports = __webpack_require__(/*! D:\LaraCode\ver 7\CRM\resources\js\script.js */"./resources/js/script.js");
 
 
 /***/ })

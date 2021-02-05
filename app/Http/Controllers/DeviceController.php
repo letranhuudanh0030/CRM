@@ -10,20 +10,30 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::orderBy('created_at', 'DESC')->get();
+
+
         return view('manages.device.list')->with('devices', $devices)
                                         ->with('title', 'Danh sách thiết bị');
     }
 
     public function store()
     {
-        Device::create([
-            'name' => request()->name
+        $device = Device::create([
+            'name' => request()->name,
+            'type_id' => request()->type_id,
+            'qty' => request()->qty
         ]);
+
+        return response($device, 200);
     }
 
     public function update()
     {
-        Device::where('id', request()->id)->update(['name' => request()->name]);
+        Device::where('id', request()->id)->update([
+            'name' => request()->name,
+            'type_id' => request()->type_id,
+            'qty' => request()->qty
+        ]);
         $device = Device::findOrFail(request()->id);
         return response($device, 200);
     }

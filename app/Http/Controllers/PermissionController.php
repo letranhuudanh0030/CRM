@@ -23,7 +23,6 @@ class PermissionController extends Controller
 
     public function update()
     {
-        dd(request()->all());
         Permission::where('id', request()->id)->update(['name' => request()->name]);
         $permission = Permission::findOrFail(request()->id);
         return response($permission, 200);
