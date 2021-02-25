@@ -21,7 +21,7 @@ $(function () {
     })
 
 
-    $('#modal_branch, #modal_change_password, #modal_remove, #modal_device, #modal_permission, #modal_task, #modal_user').on('hidden.bs.modal', function (e) {
+    $('#modal_device_type, #modal_branch, #modal_change_password, #modal_remove, #modal_device, #modal_permission, #modal_task, #modal_user').on('hidden.bs.modal', function (e) {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
     })

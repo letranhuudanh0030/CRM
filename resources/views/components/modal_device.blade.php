@@ -16,9 +16,10 @@
                     <div class="form-group">
                         <label for="type" class="col-form-label">Loại thiết bị:</label>
                         <select name="type" id="type" class="form-control">
-                            @for ($i = 0; $i < count(config('variables.device_type')); $i++)                    
-                                <option value="{{ $i }}" class="type-{{ $i }}">{{ config('variables.device_type')[$i] }}</option>                               
-                            @endfor
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}" class="type-{{ $type->id }}">{{ $type->name }}</option>                               
+                            @endforeach
+                       
                         </select>
                     </div>
                     <div class="form-group">
@@ -35,7 +36,7 @@
     </div>
 </div>
 
-<script>
+<script defer>
     $('#modal_device').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var action = button.data('action') 
@@ -49,8 +50,18 @@
             if(ob.name != name_in_list){
                 modal.find('.modal-body #name').val(name_in_list)
             } 
+
             modal.find('.modal-body #type .type-'+ob.type_id+'').prop('selected', true);
+            var type_in_list = $('.type-' + ob.id).attr('type-id');
+            if(ob.type_id != type_in_list){
+                modal.find('.modal-body #type').val(type_in_list)
+            } 
+
             modal.find('.modal-body #qty').val(ob.qty)
+            var qty_in_list = $('.qty-' + ob.id).text();
+            if(ob.qty != qty_in_list){
+                modal.find('.modal-body #qty').val(qty_in_list)
+            } 
 
             modal.find('.modal-body form').data("id", ob.id)
             modal.find('.modal-body form').data("action", action)    
@@ -69,6 +80,7 @@
         var action = $('#modal_device .modal-body form').data("action");
         var id = $('#modal_device .modal-body form').data("id");
         var type_id = $('#modal_device .modal-body #type').val();
+
         if(action == 'edit'){
             axios.post('/devices/update', {
                 id: id,
@@ -82,6 +94,7 @@
                 if(response.data.type_id == type_id){
                     var type_resp = $('.modal-body #type .type-'+type_id).text()
                     $('.type-' + id).text(type_resp)
+                    $('.type-' + id).attr('type-id', type_id)
                 }
             })
             .catch(function (error) {
@@ -103,7 +116,7 @@
                 if(segment[1] == 'devices'){
                     location.reload();
                 } else {
-                    $('#modal_task .modal-body #device').append('<option value="'+response.data.id+'" class="device-'+response.data.id+'">'+response.data.name+'</option>');
+                    $('#modal_task .modal-body #device').prepend('<option value="'+response.data.id+'" class="device-'+response.data.id+'">'+response.data.name+'</option>');
                 }
             })
             .catch(function (error) {

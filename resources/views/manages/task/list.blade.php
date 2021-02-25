@@ -27,6 +27,7 @@ Quản lý công việc bảo trì
                                     <th>Kỹ thuật</th>
                                     <th>Người yêu cầu</th>
                                     <th>Ngày yêu cầu</th>
+                                    <th>Ngày hoàn thành</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -34,15 +35,18 @@ Quản lý công việc bảo trì
                                 @foreach ($tasks as $task)
                                 <tr class="item-{{ $task->id }}">
                                     <td>{{ $task->id }}</td>
-                                    <td class="deivce-{{ $task->id }}">{{ $task->device['name'] }}</td>
-                                    <td class="branch-{{ $task->id }}">{{ $task->branch['name'] }}</td>
-                                    <td class="technician-{{ $task->id }}">{{ $task->technician['name'] }}</td>
-                                    <td class="creator-{{ $task->id }}">{{ $task->creator['name'] }}</td>
-                                    <td class="created-{{ $task->id }}">{{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</td>
+                                    <td class="device-row-{{ $task->id }}" device-id="{{ $task->device['id'] }}">{{ $task->device['name'] }}</td>
+                                    <td class="branch-row-{{ $task->id }}">{{ $task->branch['name'] }}</td>
+                                    <td class="technician-row-{{ $task->id }}">{{ $task->technician['name'] }}</td>
+                                    <td class="creator-row-{{ $task->id }}">{{ $task->creator['name'] }}</td>
+                                    <td class="created-row-{{ $task->id }}">
+                                        {{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</td>
+                                    <td class="success-row-{{ $task->id }}">
+                                        {{ date('d-m-Y H:i:s', strtotime($task->success_date)) }}</td>
                                     <td class="text-right">
                                         <button class="btn bg-gradient-info" type="button" data-toggle="modal"
                                             data-target="#modal_task" data-action="edit" data-name="Chỉnh sửa"
-                                            data-object="{{ $task }}"><i class="fas fa-pencil-alt"></i> Chỉnh
+                                            data-object="{{ $task }}" id="edit_task"><i class="fas fa-pencil-alt"></i> Chỉnh
                                             sửa</button>
                                         <button class="btn bg-gradient-danger" type="button" data-toggle="modal"
                                             data-target="#modal_remove" data-object="{{ $task }}"
@@ -59,6 +63,7 @@ Quản lý công việc bảo trì
                                     <th>Kỹ thuật</th>
                                     <th>Người yêu cầu</th>
                                     <th>Ngày yêu cầu</th>
+                                    <th>Ngày hoàn thành</th>
                                     <th></th>
                                 </tr>
                             </tfoot>
@@ -83,7 +88,7 @@ Quản lý công việc bảo trì
 <link rel="stylesheet" href="{{ asset('css/select2-bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}"> --}}
 
 @endsection
 
@@ -104,11 +109,13 @@ Quản lý công việc bảo trì
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
-<script src="{{ asset('js/dropzone.js') }}"></script>
+<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+{{-- <script src="{{ asset('js/dropzone.js') }}"></script> --}}
 
 @include('components.modal_task')
 @include('components.modal_device')
 @include('components.modal_branch')
 @include('components.modal_delete')
+
 
 @endsection

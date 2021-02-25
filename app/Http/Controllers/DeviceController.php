@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Device;
+use App\DeviceType;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
@@ -10,9 +11,10 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::orderBy('created_at', 'DESC')->get();
-
+        $types = DeviceType::where('status', 1)->get();
 
         return view('manages.device.list')->with('devices', $devices)
+                                        ->with('types', $types)
                                         ->with('title', 'Danh sách thiết bị');
     }
 

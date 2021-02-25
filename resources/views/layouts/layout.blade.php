@@ -30,12 +30,12 @@
                         <div class="col-sm-6">
                             <h1 class="m-0 text-uppercase">@yield('title_page')</h1>
                         </div><!-- /.col -->
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Starter Page</li>
                             </ol>
-                        </div><!-- /.col -->
+                        </div><!-- /.col --> --}}
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
@@ -58,6 +58,12 @@
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('linkjs')
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('a.nav-link.active').closest('li.has-submenu').addClass('menu-open');
+            $('a.nav-link.active').closest('li.has-submenu').find('a.a-has-submenu').addClass('active');
+        });
+    </script>
 </body>
 
 </html>

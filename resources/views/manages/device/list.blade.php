@@ -35,13 +35,13 @@ Quản lý thiết bị
                                     <td>{{ $device->id }}</td>
                                     {{-- <td>{{ $device->device_id }}</td> --}}
                                     <td class="name-{{ $device->id }}">{{ $device->name }}</td>
-                                    <td class="type-{{ $device->id }}">
-                                        @for ($i = 0; $i < count(config('variables.device_type')); $i++)
-                                            @if ($i == $device->type_id)
-                                                {{ config('variables.device_type')[$i] }}
-                                            @endif
-                                        @endfor
-                                    </td>
+                                    
+                                    @for ($i = 0; $i < count(config('variables.device_type')); $i++)
+                                        @if ($i == $device->type_id)
+                                        <td class="type-{{ $device->id }}" type-id="{{ $device->type_id }}">{{ config('variables.device_type')[$i] }}</td>
+                                        @endif
+                                    @endfor
+                                    
                                     <td class="qty-{{ $device->id }}">{{ $device->qty }}</td>
                                     <td>
                                         <div class="custom-control custom-switch">

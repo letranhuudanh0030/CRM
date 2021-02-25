@@ -20,7 +20,7 @@
 </div>
 
 
-<script>
+<script defer>
     $('#modal_remove').on('show.bs.modal', function (event){
         var button = $(event.relatedTarget)
         var ob = button.data('object')

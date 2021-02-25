@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<script>
+<script defer>
     $('#modal_permission').on('shown.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var action = button.data('action') 
