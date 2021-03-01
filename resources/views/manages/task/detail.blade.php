@@ -113,11 +113,13 @@
                                         <h5 class="m-0">Hình ảnh thiết bị hư hỏng</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="show_image_device_damaged mt-2">
+                                        <div class="show_image_device_damaged mt-2 row">
                                             @if ($task->image_device_damaged)
-                                                @foreach (explode(',', $task->image_device_damaged) as $img)
+                                                @foreach (explode(',', $task->image_device_damaged) as $key => $img)
                                                 <div class="border col-3">
-                                                    <img src="{{ $img }}" alt="" class="img-fluid">
+                                                    <a href="{{ $img }}" data-toggle="lightbox" data-title="Hình ảnh thiết bị hư hỏng {{ $key + 1 }}" data-gallery="gallery">
+                                                        <img src="{{ $img }}" alt="" class="img-fluid">
+                                                    </a>
                                                 </div>
                                                 @endforeach
                                             @else
@@ -135,11 +137,13 @@
                                         <h5 class="m-0">Hình ảnh kết quả</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="show_image_result">
+                                        <div class="show_image_result row">
                                             @if ($task->image_result)
-                                                @foreach (explode(',', $task->image_result) as $img)
+                                                @foreach (explode(',', $task->image_result) as $key => $img)
                                                 <div class="border col-3">
-                                                    <img src="{{ $img }}" alt="" class="img-fluid">
+                                                    <a href="{{ $img }}" data-toggle="lightbox" data-title="Hình ảnh kết quả {{ $key + 1 }}" data-gallery="gallery">
+                                                        <img src="{{ $img }}" alt="" class="img-fluid">
+                                                    </a>
                                                 </div>
                                                 @endforeach
                                             @else
@@ -247,7 +251,7 @@
 <link rel="stylesheet" href="{{ asset('css/select2-bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
-{{-- <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}"> --}}
+<link rel="stylesheet" href="{{ asset('css/ekko-lightbox.css') }}">
 @endsection
 
 @section('linkjs')
@@ -268,6 +272,7 @@
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+<script src="{{ asset('js/ekko-lightbox.min.js') }}"></script>
 <script defer>
     $('#device_damaged, #note').summernote()
     $('#result').select2({

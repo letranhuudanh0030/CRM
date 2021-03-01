@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index');
     Route::get('/task/{id}/detail', 'MaintenanceController@detail');
@@ -65,6 +67,7 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
         Route::post('delete', 'MaintenanceController@delete');
         Route::post('update_status', 'MaintenanceController@update_status');
         Route::post('upload', 'MaintenanceController@upload');
+        Route::get('mail', 'MaintenanceController@sendMail');
     });
 });
 

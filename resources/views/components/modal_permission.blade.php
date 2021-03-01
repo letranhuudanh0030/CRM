@@ -7,23 +7,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form data-id="" data-action="">
+            <form data-id="" data-action="" id="modalPermission">
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Nhóm quyền:</label>
+                        <label for="name" class="col-form-label">Nhóm quyền <span class="text-danger">(*)</span>:</label>
                         <input type="text" class="form-control" id="name" name="name" value="">
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary btn-save">Lưu</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-save">Lưu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<script defer>
+<script>
     $('#modal_permission').on('shown.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var action = button.data('action') 
@@ -31,54 +31,73 @@
         var ob = button.data('object')
         var modal = $(this)
 
+        
+
         if(action == "edit"){
             modal.find('.modal-body #name').val(ob.name)
             var name_in_list = $('.name-' + ob.id).text();
             if(ob.name != name_in_list){
                 modal.find('.modal-body #name').val(name_in_list)
             } 
-            modal.find('.modal-body form').data("id", ob.id)
-            modal.find('.modal-body form').data("action", action)          
+            modal.find('form').data("id", ob.id)
+            modal.find('form').data("action", action)          
             modal.find('.modal-title').html(name + " nhóm quyền: <b>" + name_in_list + "</b>")
         } 
         else if(action == "create"){
             modal.find('.modal-body #name').val("")
-            modal.find('.modal-body form').data("action", action)       
+            modal.find('form').data("action", action)       
             modal.find('.modal-title').text(name + " nhóm quyền")
         }
     })
 
 
-    $('.modal-footer .btn-save').click(function(e) {
-        var action = $('.modal-body form').data("action");
-        var id = $('.modal-body form').data("id");
+    $('#modalPermission').validate({
+        // debug: true,
+        errorClass: "invalid",
+        rules: {
+            name: {
+                required: true,
+            },
 
-        if(action == 'edit'){
-            axios.post('/permission/update', {
-                id: id,
-                name: $('.modal-body #name').val(),
-            })
-            .then(function (response) {
-                $('.name-' + id).text(response.data.name)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        } else if(action == "create"){
-            let name = $('.modal-body #name').val()
-                
-            axios.post('/permission/store', {
-                name: name,
-            })
-            .then(function (response) {
-                location.reload();
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        },
+        messages: {
+            name: {
+                required: "Bắt buộc nhập",
+            },
+        },
+
+        submitHandler: function(form) {
+            var action = $('#modal_permission form').data("action");
+            var id = $('#modal_permission form').data("id");
+
+            if(action == 'edit'){
+                axios.post('/permission/update', {
+                    id: id,
+                    name: $('.modal-body #name').val(),
+                })
+                .then(function (response) {
+                    $('.name-' + id).text(response.data.name)
+                    $('#modal_permission').modal('hide')
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            } else if(action == "create"){
+                let name = $('.modal-body #name').val()
+                    
+                axios.post('/permission/store', {
+                    name: name,
+                })
+                .then(function (response) {
+                    location.reload();
+                    $('#modal_permission').modal('hide')
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+            
+            return false
         }
-
-        $('#modal_permission').modal('hide')
-    })
-
+    });
 </script>

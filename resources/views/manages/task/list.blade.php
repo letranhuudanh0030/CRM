@@ -40,9 +40,9 @@ Quản lý công việc bảo trì
                                     <td class="technician-row-{{ $task->id }}">{{ $task->technician['name'] }}</td>
                                     <td class="creator-row-{{ $task->id }}">{{ $task->creator['name'] }}</td>
                                     <td class="created-row-{{ $task->id }}">
-                                        {{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</td>
+                                        {{ $task->required_date ? date('d-m-Y H:i:s', strtotime($task->required_date)) : "" }}</td>
                                     <td class="success-row-{{ $task->id }}">
-                                        {{ date('d-m-Y H:i:s', strtotime($task->success_date)) }}</td>
+                                        {{ $task->success_date ? date('d-m-Y H:i:s', strtotime($task->success_date)) : "" }}</td>
                                     <td class="text-right">
                                         <button class="btn bg-gradient-info" type="button" data-toggle="modal"
                                             data-target="#modal_task" data-action="edit" data-name="Chỉnh sửa"
@@ -88,8 +88,6 @@ Quản lý công việc bảo trì
 <link rel="stylesheet" href="{{ asset('css/select2-bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
-{{-- <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}"> --}}
-
 @endsection
 
 @section('linkjs')
@@ -99,23 +97,25 @@ Quản lý công việc bảo trì
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('js/jszip.min.js') }}"></script>
-<script src="{{ asset('js/pdfmake.min.js') }}"></script>
-<script src="{{ asset('js/vfs_fonts.js') }}"></script>
-<script src="{{ asset('js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/jszip.min.js') }}" defer></script>
+<script src="{{ asset('js/pdfmake.min.js') }}" defer></script>
+<script src="{{ asset('js/vfs_fonts.js') }}" defer></script>
+<script src="{{ asset('js/buttons.html5.min.js') }}" defer></script>
+<script src="{{ asset('js/buttons.print.min.js') }}" defer></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}" defer></script>
 <script src="{{ asset('js/select2.full.min.js') }}"></script>
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
-{{-- <script src="{{ asset('js/dropzone.js') }}"></script> --}}
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/additional-methods.min.js') }}"></script>
 
 @include('components.modal_task')
 @include('components.modal_device')
 @include('components.modal_branch')
 @include('components.modal_delete')
+
 
 
 @endsection

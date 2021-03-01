@@ -9,8 +9,12 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/AdminLTE.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome-free/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sweetalert2/bootstrap-4.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
     @yield('linkcss')
+    <style>
+        .invalid{color:red; font-weight: normal !important;}
+    </style>
 </head>
 
 <body class="sidebar-mini" style="height: auto;">
@@ -56,14 +60,25 @@
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/AdminLTE.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    @yield('linkjs')
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('a.nav-link.active').closest('li.has-submenu').addClass('menu-open');
-            $('a.nav-link.active').closest('li.has-submenu').find('a.a-has-submenu').addClass('active');
-        });
+        var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
     </script>
+    @if (Session::has('success'))
+        <script>
+            Toast.fire({
+            icon: 'success',
+            title: '{{ Session::get('success') }}'
+            })
+        </script>
+    @endif
+    @yield('linkjs')
+    <script src="{{ asset('js/script.js') }}"></script>  
 </body>
 
 </html>

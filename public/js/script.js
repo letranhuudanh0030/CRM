@@ -101,6 +101,12 @@ $(function () {
     "autoWidth": false,
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
   }).buttons().container().appendTo('#data_table_wrapper .col-md-6:eq(0)');
+  $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+    event.preventDefault();
+    $(this).ekkoLightbox({
+      alwaysShowClose: true
+    });
+  });
   var checkboxlist = $('#table-content');
   checkboxlist.on('click', ".status", function () {
     var id = $(this).attr('id').replace("status_", "");
@@ -119,6 +125,8 @@ $(function () {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
   });
+  $('a.nav-link.active').closest('li.has-submenu').addClass('menu-open');
+  $('a.nav-link.active').closest('li.has-submenu').find('a.a-has-submenu').addClass('active');
 });
 
 /***/ }),

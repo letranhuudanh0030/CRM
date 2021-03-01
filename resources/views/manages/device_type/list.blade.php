@@ -93,6 +93,8 @@ Quản lý loại thiết bị
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/additional-methods.min.js') }}"></script>
 
 @include('components.modal_device_type')
 @include('components.modal_delete')

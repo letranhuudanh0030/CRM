@@ -1,5 +1,7 @@
+<form data-id="" data-action="" id="modalTask">
 <div class="modal fade" id="modal_task" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -8,9 +10,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form data-id="" data-action="">
+                
                     <div class="form-group">
-                        <label for="device" class="col-form-label">Thiết bị:</label>
+                        <label for="device" class="col-form-label">Thiết bị <span class="text-danger">(*)</span>:</label>
                         <select name="device" id="device" class="form-control">
                             <option value="">-- Chọn thiết bị --</option>
                             @foreach ($devices as $device)
@@ -48,7 +50,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="branch" class="col-form-label">Chi nhánh:</label>
+                        <label for="branch" class="col-form-label">Chi nhánh <span class="text-danger">(*)</span>:</label>
                         <select name="branch" id="branch" class="form-control">
                             <option value="">-- Chọn chi nhánh --</option>
                             @foreach ($branchs as $branch)
@@ -62,7 +64,7 @@
                             Thêm</button>
                     </div>
                     <div class="form-group">
-                        <label for="technician" class="col-form-label">Kỹ thuật viên:</label>
+                        <label for="technician" class="col-form-label">Kỹ thuật viên <span class="text-danger">(*)</span>:</label>
                         <select name="technician" id="technician" class="form-control">
                             <option value="">-- Chọn kỹ thuật viên --</option>
                             @foreach ($technicians as $technician)
@@ -125,19 +127,20 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary btn-save">Lưu</button>
+                <button type="submit" class="btn btn-primary btn-save">Lưu</button>
             </div>
         </div>
     </div>
 </div>
+</form>
 
 @include('components.modal_gallery')
 
-<script defer>
+<script>
     $('#device, #branch, #technician, #result').select2({
         theme: 'bootstrap4'
     })
@@ -170,6 +173,13 @@
         url_images(image_result, "show_image_result")
         
     });
+
+    // var Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     timer: 3000
+    //   });
 
     function url_images(url_images, show_imgs) {
         if(url_images){
@@ -206,14 +216,36 @@
         var imgs_device_damaged = modal.find('.modal-body #image_device_damaged');
         var imgs_device_result = modal.find('.modal-body #image_result');
         
-        
-
-
-
         modal.find('.modal-footer .btn-save').off('click')
-        modal.find('.modal-footer .btn-save').click(function(e) {
-            // var action = modal.find('.modal-body form').data("action");
 
+        $('#modalTask').validate({
+        // debug: true,
+        errorClass: "invalid",
+        rules: {
+            device: {
+                required: true,
+            },
+            branch: {
+                required: true,
+            },
+            technician: {
+                required: true,
+            }
+
+        },
+        messages: {
+            device: {
+                required: "Bắt buộc nhập",
+            },
+            branch: {
+                required: "Bắt buộc chọn",
+            },
+            technician: {
+                required: "Bắt buộc chọn",
+            }
+        },
+
+        submitHandler: function(form) {
             if(action == 'edit'){
                 axios.post('/task/update', {
                     id: id,
@@ -237,7 +269,7 @@
                     $('.created-row-' + response.data.id).text(moment(new Date(response.data.required_date)).format('DD-MM-YYYY HH:mm:ss'))
                     $('.success-row-' + response.data.id).text(moment(new Date(response.data.success_date)).format('DD-MM-YYYY HH:mm:ss'))
 
-                    console.log(response.data);
+                    // console.log(response.data);
                     
                     // change form
                     ob.device_id = response.data.device_id;
@@ -250,6 +282,7 @@
                     ob.success_date = response.data.success_date;
                     ob.image_device_damaged = response.data.image_device_damaged;
                     ob.image_result = response.data.image_result;
+                    $('#modal_task').modal('hide')
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -269,15 +302,20 @@
                 })
                 .then(function (response) {
                     location.reload();
+                    $('#modal_task').modal('hide')
                     // console.log(response);
+                    // Toast.fire({
+                    // icon: 'success',
+                    // title: 'ok ok ok'
+                    // })
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             }
-
-            $('#modal_task').modal('hide')
-        })
+            return false
+        }
+    });
 
 
         if(action == "edit"){

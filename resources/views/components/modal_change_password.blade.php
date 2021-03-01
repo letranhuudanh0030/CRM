@@ -29,7 +29,7 @@
 </div>
 
 
-<script defer>
+<script>
     $('#modal_change_password').on('show.bs.modal', function (event){
         var button = $(event.relatedTarget)
         var ob = button.data('object')

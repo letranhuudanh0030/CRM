@@ -65,11 +65,10 @@ class UserController extends Controller
     {
         $newEmail = request()->email;
         $email = User::select('email')->where('email', $newEmail)->first();
-        dd($email);
         if($email === null){
-            echo "aaaaaa";
+            echo 'true';
         } else {
-            echo "bbbbbb";
+            echo 'false';
         }
         
     }

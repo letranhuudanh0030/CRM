@@ -7,23 +7,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form data-id="" data-action="">
+            <form data-id="" data-action="" id="modalDeviceType">
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Tên loại:</label>
+                        <label for="name" class="col-form-label">Tên loại thiết bị <span class="text-danger">(*)</span>:</label>
                         <input type="text" class="form-control" id="name" name="name" value="">
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary btn-save">Lưu</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-save">Lưu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<script defer>
+<script>
     $('#modal_device_type').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var action = button.data('action') // Extract info from data-* attributes
@@ -32,53 +32,71 @@
         var modal = $(this)
 
         if(action == "edit"){
-            modal.find('.modal-body form').data("id", ob.id)
-            modal.find('.modal-body form').data("action", action)   
+            modal.find('form').data("id", ob.id)
+            modal.find('form').data("action", action)   
             var name_in_list = $('.name-' + ob.id).text();
             modal.find('.modal-body #name').val(name_in_list)
-            modal.find('.modal-title').html(name_action + " chi nhánh: <b>" + name_in_list + "</b>")
+            modal.find('.modal-title').html(name_action + " loại thiết bị: <b>" + name_in_list + "</b>")
         } 
         else if(action == "create"){
-            modal.find('.modal-body form').data("action", action)  
+            modal.find('form').data("action", action)  
             modal.find('.modal-body #name').val("")
-            modal.find('.modal-title').text(name_action + " chi nhánh")
+            modal.find('.modal-title').text(name_action + " loại thiết bị")
         }         
     })
 
-    $('#modal_device_type .modal-footer .btn-save').click(function(e) {
-        var action = $('#modal_device_type .modal-body form').data("action");
-        var id = $('#modal_device_type .modal-body form').data("id");
+    $('#modalDeviceType').validate({
+        // debug: true,
+        errorClass: "invalid",
+        rules: {
+            name: {
+                required: true,
+            },
 
-        if(action == 'edit'){
-            axios.post('/device_type/update', {
-                id: id,
-                name: $('#modal_device_type .modal-body #name').val(),
-            })
-            .then(function (response) {
-                $('.name-' + id).text(response.data.name)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        } else if(action == "create"){   
-            axios.post('/device_type/store', {
-                name: $('#modal_device_type .modal-body #name').val(),
-                address: $('#modal_device_type .modal-body #address').val()
-            })
-            .then(function (response) {
-                var path = $(location).attr('pathname');
-                var segment = path.split("/")
-                if(segment[1] == 'device_type'){
-                    location.reload();
-                } else {
-                    $('#modal_task .modal-body #device_type').append('<option value="'+response.data.id+'" class="device_type-'+response.data.id+'">'+response.data.name+'</option>');
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        },
+        messages: {
+            name: {
+                required: "Bắt buộc nhập",
+            },
+        },
+
+        submitHandler: function(form) {
+            var action = $('#modal_device_type form').data("action");
+            var id = $('#modal_device_type form').data("id");
+
+            if(action == 'edit'){
+                axios.post('/device_type/update', {
+                    id: id,
+                    name: $('#modal_device_type .modal-body #name').val(),
+                })
+                .then(function (response) {
+                    $('.name-' + id).text(response.data.name)
+                    $('#modal_device_type').modal('hide')
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            } else if(action == "create"){   
+                axios.post('/device_type/store', {
+                    name: $('#modal_device_type .modal-body #name').val(),
+                    address: $('#modal_device_type .modal-body #address').val()
+                })
+                .then(function (response) {
+                    var path = $(location).attr('pathname');
+                    var segment = path.split("/")
+                    if(segment[1] == 'device_type'){
+                        location.reload();
+                        $('#modal_device_type').modal('hide')
+                    } else {
+                        $('#modal_task .modal-body #device_type').append('<option value="'+response.data.id+'" class="device_type-'+response.data.id+'">'+response.data.name+'</option>');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+            
+            return false
         }
-
-        $('#modal_device_type').modal('hide')
-    })
+    });
 </script>
