@@ -190,6 +190,10 @@
                         $('.permission-' + id).text(permission_resp)
                     }
                     $('#modal_user').modal('hide')   
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cập nhật người dùng thành công!'
+                    })
 
                 })
                 .catch(function (error) {

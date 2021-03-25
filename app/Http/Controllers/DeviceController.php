@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Device;
 use App\DeviceType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class DeviceController extends Controller
 {
@@ -25,7 +26,7 @@ class DeviceController extends Controller
             'type_id' => request()->type_id,
             'qty' => request()->qty
         ]);
-
+        Session::flash('success', 'Thêm thiết bị thành công.');
         return response($device, 200);
     }
 

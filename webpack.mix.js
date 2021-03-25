@@ -12,6 +12,8 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    // .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/style.scss', 'public/css')
     .js('resources/js/script.js', 'public/js')
+    .js('./node_modules/datatables.net-buttons/js/buttons.html5.js', 'public/js')
     ;

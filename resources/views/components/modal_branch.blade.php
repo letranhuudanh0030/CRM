@@ -81,6 +81,10 @@
                     $('.name-' + id).text(response.data.name)
                     $('.address-' + id).text(response.data.address)
                     $('#modal_branch').modal('hide')
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cập nhật chi nhánh thành công!'
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);

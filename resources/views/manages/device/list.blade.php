@@ -35,12 +35,12 @@ Quản lý thiết bị
                                     <td>{{ $device->id }}</td>
                                     {{-- <td>{{ $device->device_id }}</td> --}}
                                     <td class="name-{{ $device->id }}">{{ $device->name }}</td>
-                                    
-                                    @for ($i = 0; $i < count(config('variables.device_type')); $i++)
-                                        @if ($i == $device->type_id)
-                                        <td class="type-{{ $device->id }}" type-id="{{ $device->type_id }}">{{ config('variables.device_type')[$i] }}</td>
-                                        @endif
-                                    @endfor
+{{--                                     
+                                    @foreach ($i = 0; $i < count(config('variables.device_type')); $i++)
+                                        @if ($i == $device->type_id) --}}
+                                        <td class="type-{{ $device->id }}" type-id="{{ $device->type_id }}">{{ $device->type['name'] }}</td>
+                                        {{-- @endif
+                                    @endfor --}}
                                     
                                     <td class="qty-{{ $device->id }}">{{ $device->qty }}</td>
                                     <td>
@@ -99,13 +99,13 @@ Quản lý thiết bị
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
 

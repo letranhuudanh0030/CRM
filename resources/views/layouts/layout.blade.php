@@ -6,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>Document</title>
+    <title>{{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/AdminLTE.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome-free/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2/bootstrap-4.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
     @yield('linkcss')
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
         .invalid{color:red; font-weight: normal !important;}
+        .modal-body {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -63,11 +68,11 @@
     <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script>
         var Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000
-      });
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
     </script>
     @if (Session::has('success'))
         <script>

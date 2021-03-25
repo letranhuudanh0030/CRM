@@ -15,7 +15,7 @@ class CheckSuperAdmin
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->permission_id != 1){
+        if($request->user()->permission->role != 2){
             return redirect('/');
         }
         return $next($request);

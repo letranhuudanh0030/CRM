@@ -41,6 +41,10 @@
         .then(function(response){
             $('#modal_remove').modal('hide')
             $('.item-' + id).fadeOut(500);
+            Toast.fire({
+                icon: 'success',
+                title: 'Xóa thành công!'
+            })
         })
         .catch(function(error){
             console.log(error);

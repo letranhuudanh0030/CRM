@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DeviceType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class DeviceTypeController extends Controller
 {
@@ -19,6 +20,7 @@ class DeviceTypeController extends Controller
         $type = DeviceType::create([
             'name' => request()->name,
         ]);
+        Session::flash('success', 'Thêm loại thiết bị thành công.');
         return response($type, 200);
     }
 

@@ -1,8 +1,17 @@
 $(function () {
     $("#data_table").DataTable({
     "order": [[0, 'desc']],
-    "responsive": true, "lengthChange": false, "autoWidth": false,
-    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    "responsive": {
+        details: {
+            display: $.fn.dataTable.Responsive.display.childRowImmediate,
+            type: 'none',
+            target: ''
+        }
+    }, 
+    // "scrollX": true,
+    "lengthChange": false, 
+    "autoWidth": false,
+    "buttons": ["excel"]
     }).buttons().container().appendTo('#data_table_wrapper .col-md-6:eq(0)');      
 
 
@@ -29,7 +38,7 @@ $(function () {
     })
 
 
-    $('#modal_device_type, #modal_branch, #modal_change_password, #modal_remove, #modal_device, #modal_permission, #modal_task, #modal_user').on('hidden.bs.modal', function (e) {
+    $('#modal_update_task_detail, #modal_device_type, #modal_branch, #modal_change_password, #modal_remove, #modal_device, #modal_permission, #modal_task, #modal_user').on('hidden.bs.modal', function (e) {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
     })

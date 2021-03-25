@@ -1,18 +1,26 @@
+<style>
+    .dz-disable{
+        pointer-events: none;   
+        cursor: not-allowed;
+        background: #dddddd;
+    }
+</style>
+
 <form data-id="" data-action="" id="modalTask">
-<div class="modal fade" id="modal_task" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
-        
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                
+    <div class="modal fade" id="modal_task" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="device" class="col-form-label">Thiết bị <span class="text-danger">(*)</span>:</label>
+                        <label for="device" class="col-form-label">Thiết bị <span
+                                class="text-danger">(*)</span>:</label>
                         <select name="device" id="device" class="form-control">
                             <option value="">-- Chọn thiết bị --</option>
                             @foreach ($devices as $device)
@@ -20,7 +28,7 @@
                             </option>
                             @endforeach
                         </select>
-                        <button class="btn bg-gradient-success px-4 mt-1" type="button" data-toggle="modal"
+                        <button class="btn bg-gradient-success px-4 mt-1 add-device" type="button" data-toggle="modal"
                             data-target="#modal_device" data-action="create" data-name="Thêm"><i
                                 class="fas fa-plus"></i>
                             Thêm</button>
@@ -32,7 +40,7 @@
                     <div class="form-group">
                         <label class="form-control-label">Hình ảnh tình trạng hư hỏng:</label>
                         <div class="mb-3">
-                            <div class="input-group">
+                            {{-- <div class="input-group">
                                 <input type="text" class="form-control" id="image_device_damaged"
                                     name="image_device_damaged" readonly value="{{ old('image_device_damaged') }}">
                                 <div class="input-group-append">
@@ -40,7 +48,11 @@
                                         data-toggle="modal" data-target="#modal-file" type="button"
                                         data-name-type='image_device_damaged'>Browser</button>
                                 </div>
-                            </div>
+                            </div> --}}
+                            <x-upload>
+                                <x-slot name='id'>image_device_damaged</x-slot>
+                                <x-slot name='input_id'>input_image_device_damaged</x-slot>
+                            </x-upload>
                             <span class="text-small text-gray help-block-none">Có thể chọn nhiều hình của thiết
                                 bị.</span>
                             <br>
@@ -50,7 +62,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="branch" class="col-form-label">Chi nhánh <span class="text-danger">(*)</span>:</label>
+                        <label for="branch" class="col-form-label">Chi nhánh <span
+                                class="text-danger">(*)</span>:</label>
                         <select name="branch" id="branch" class="form-control">
                             <option value="">-- Chọn chi nhánh --</option>
                             @foreach ($branchs as $branch)
@@ -58,13 +71,14 @@
                             </option>
                             @endforeach
                         </select>
-                        <button class="btn bg-gradient-success px-4 mt-1" type="button" data-toggle="modal"
+                        <button class="btn bg-gradient-success px-4 mt-1 add-branch" type="button" data-toggle="modal"
                             data-target="#modal_branch" data-action="create" data-name="Thêm"><i
                                 class="fas fa-plus"></i>
                             Thêm</button>
                     </div>
                     <div class="form-group">
-                        <label for="technician" class="col-form-label">Kỹ thuật viên <span class="text-danger">(*)</span>:</label>
+                        <label for="technician" class="col-form-label">Kỹ thuật viên <span
+                            class="text-danger">(*)</span>:</label>
                         <select name="technician" id="technician" class="form-control">
                             <option value="">-- Chọn kỹ thuật viên --</option>
                             @foreach ($technicians as $technician)
@@ -86,7 +100,7 @@
                     <div class="form-group">
                         <label class="form-control-label">Hình ảnh kết quả:</label>
                         <div class="mb-3">
-                            <div class="input-group">
+                            {{-- <div class="input-group">
                                 <input type="text" class="form-control" id="image_result" name="image_result" readonly
                                     value="{{ old('image_result') }}">
                                 <div class="input-group-append">
@@ -94,7 +108,11 @@
                                         data-toggle="modal" data-target="#modal-file" type="button"
                                         data-name-type='image_result'>Browser</button>
                                 </div>
-                            </div>
+                            </div> --}}
+                            <x-upload>
+                                <x-slot name='id'>image_result</x-slot>
+                                <x-slot name='input_id'>input_image_result</x-slot>
+                            </x-upload>
                             <span class="text-small text-gray help-block-none">Có thể chọn nhiều hình của thiết
                                 bị.</span>
                             <br>
@@ -108,34 +126,35 @@
                         <textarea id="note" name="note" cols="30" rows="10"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Ngày yêu cầu:</label>
+                        <label>Ngày yêu cầu <span
+                            class="text-danger">(*)</span>:</label>
                         <div class="input-group date" id="startDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#startDate"
-                                name="startDate" data-toggle="datetimepicker" id="start_date">
                             <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                             </div>
+                            <input type="text" class="form-control datetimepicker-input" data-target="#startDate"
+                                name="startDate" data-toggle="datetimepicker" id="start_date">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Ngày hoàn thành:</label>
                         <div class="input-group date" id="endDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#endDate"
-                                name="endDate" data-toggle="datetimepicker" id="end_date">
                             <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                             </div>
+                            <input type="text" class="form-control datetimepicker-input" data-target="#endDate"
+                                name="endDate" data-toggle="datetimepicker" id="end_date">
                         </div>
                     </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary btn-save">Lưu</button>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary btn-save">Lưu</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </form>
 
 @include('components.modal_gallery')
@@ -150,7 +169,76 @@
     $('#startDate, #endDate').datetimepicker({
         format: 'DD/MM/YYYY HH:mm:ss',
         timepicker: true,
+        lang: "vi",
     });
+    
+    var page = getUriPage()
+    if(page == "list"){
+        $('#result, #end_date, #image_result ~ .start, #image_result ~ .cancel').prop('disabled', true)
+        $('#image_result').addClass('dz-disable')
+    } else {
+        $('#device, .add-device, #branch, .add-branch, #technician, #start_date, #image_device_damaged ~ .start, #image_device_damaged ~ .cancel').prop('disabled', true)
+        $('#device_damaged').summernote('disable');
+        $('#note').summernote('disable');
+        $('#image_device_damaged').addClass('dz-disable')
+    }
+    
+    function getUriPage(){
+        let uri = location.pathname;
+
+        uri_arr = uri.split("/")
+
+        return uri_arr[uri_arr.length - 1]
+    }
+
+
+    Dropzone.autoDiscover = false;
+
+    $('.dropzone').each(function(index, data){
+        var dropUrl = '/task/upload';
+        var dropParamName = $(this).attr('id');
+        
+        var myDropzone = new Dropzone(`#${data.id}`,{
+            url: dropUrl,
+            paramName: dropParamName,
+            parallelUploads: 50,
+            uploadMultiple: true,
+            addRemoveLinks: true,
+            autoQueue: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, response){
+                // if(response[])
+                $(`#input_${response['file']}`).val(response['url'])
+                console.log(response);
+            },
+            // init: function () {
+            //     var mockFile = { name: "/uploads/image(0)_1614937938.jpg"};       
+            //     this.options.addedfile.call(this, mockFile);
+            //     this.options.thumbnail.call(this, mockFile, "/uploads/image(0)_1614937938.jpg");
+            //     mockFile.previewElement.classList.add('dz-success');
+            //     mockFile.previewElement.classList.add('dz-complete');
+            // }
+        });
+
+        $(`#${data.id} ~ .start`).click(function(e){
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+            return false;
+        })
+
+        $(`#${data.id} ~ .cancel`).click(function(e){
+            myDropzone.removeAllFiles(true);
+            return false;
+        })
+
+    });
+
+
+
+
+   
+  
 
     // click image_device_damaged open filemanager
     $('.browser_image_device_damaged').click(function(){
@@ -173,13 +261,6 @@
         url_images(image_result, "show_image_result")
         
     });
-
-    // var Toast = Swal.mixin({
-    //     toast: true,
-    //     position: 'top-end',
-    //     showConfirmButton: false,
-    //     timer: 3000
-    //   });
 
     function url_images(url_images, show_imgs) {
         if(url_images){
@@ -216,6 +297,8 @@
         var imgs_device_damaged = modal.find('.modal-body #image_device_damaged');
         var imgs_device_result = modal.find('.modal-body #image_result');
         
+        modal.find('.modal-footer .btn-save').attr('action', action)    
+
         modal.find('.modal-footer .btn-save').off('click')
 
         $('#modalTask').validate({
@@ -228,10 +311,12 @@
             branch: {
                 required: true,
             },
-            technician: {
-                required: true,
+            technician:{
+                required: true
+            },
+            startDate: {
+                required: true
             }
-
         },
         messages: {
             device: {
@@ -240,13 +325,17 @@
             branch: {
                 required: "Bắt buộc chọn",
             },
-            technician: {
-                required: "Bắt buộc chọn",
+            technician:{
+                required: "Bắt buộc chọn"
+            },
+            startDate: {
+                required: "Bắt buộc chọn"
             }
         },
 
         submitHandler: function(form) {
-            if(action == 'edit'){
+            let btn_action = modal.find('.modal-footer .btn-save').attr('action')
+            if(btn_action == 'edit'){
                 axios.post('/task/update', {
                     id: id,
                     device_id: device.val(),
@@ -257,8 +346,10 @@
                     note: note.val(),
                     start_date: formatDateTime(start_date.val()),
                     end_date: formatDateTime(end_date.val()),
-                    imgs_device_damaged: imgs_device_damaged.val(),
-                    imgs_device_result: imgs_device_result.val()
+                    // imgs_device_damaged: imgs_device_damaged.val(),
+                    // imgs_device_result: imgs_device_result.val()
+                    imgs_device_damaged: $('#input_image_device_damaged').val(),
+                    imgs_device_result: $('#input_image_result').val()
                 })
                 .then(function (response) {
                     // Change list
@@ -283,11 +374,15 @@
                     ob.image_device_damaged = response.data.image_device_damaged;
                     ob.image_result = response.data.image_result;
                     $('#modal_task').modal('hide')
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cập nhật công việc thành công!'
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-            } else if(action == "create"){
+            } else if(btn_action == "create"){
                 axios.post('/task/store', {
                     device_id: device.val(),
                     device_damaged: device_damaged.val(),
@@ -297,17 +392,15 @@
                     note: note.val(),
                     start_date: formatDateTime(start_date.val()),
                     end_date: formatDateTime(end_date.val()),
-                    imgs_device_damaged: imgs_device_damaged.val(),
-                    imgs_device_result: imgs_device_result.val(),
+                    // imgs_device_damaged: imgs_device_damaged.val(),
+                    // imgs_device_result: imgs_device_result.val(),
+                    imgs_device_damaged: $('#input_image_device_damaged').val(),
+                    imgs_device_result: $('#input_image_result').val()
                 })
                 .then(function (response) {
                     location.reload();
+                    console.log(response);
                     $('#modal_task').modal('hide')
-                    // console.log(response);
-                    // Toast.fire({
-                    // icon: 'success',
-                    // title: 'ok ok ok'
-                    // })
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -326,8 +419,18 @@
             result.val(ob.result).trigger('change')
             device_damaged.summernote("code", ob.device_damaged)
             note.summernote("code", ob.note)
-            start_date.val(moment(new Date(ob.required_date)).format('DD/MM/YYYY HH:mm:ss'))
-            end_date.val(moment(new Date(ob.success_date)).format('DD/MM/YYYY HH:mm:ss'))
+            if(ob.required_date){
+                start_date.val(moment(new Date(ob.required_date)).format('DD/MM/YYYY HH:mm:ss'))
+            } else {
+                start_date.val(moment(new Date(ob.created_at)).format('DD/MM/YYYY HH:mm:ss'))
+            }
+
+            if(ob.success_date){
+                end_date.val(moment(new Date(ob.success_date)).format('DD/MM/YYYY HH:mm:ss'))
+            }
+
+            // start_date.val(ob.required_date)
+            // end_date.val(ob.success_date)
 
             
 

@@ -22,7 +22,8 @@ Quản lý nhóm quyền người dùng
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Quyền</th>
+                                    <th>Tên nhóm</th>
+                                    <th>Quyền hạn</th>
                                     <th>Ẩn/Hiện</th>
                                     <th></th>
                                 </tr>
@@ -32,6 +33,21 @@ Quản lý nhóm quyền người dùng
                                 <tr class="item-{{ $permission->id }}">
                                     <td>{{ $permission->id }}</td>
                                     <td class="name-{{ $permission->id }}">{{ $permission->name }}</td>
+                                    <td class="role-{{ $permission->id }}">
+                                        @switch($permission->role)
+                                            @case(1)
+                                                Manager
+                                                @break
+                                            @case(2)
+                                                Super Admin
+                                                @break
+                                            @case(3)
+                                                CEO
+                                                @break
+                                            @default
+                                                User
+                                        @endswitch    
+                                    </td>
                                     <td>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input status"
@@ -56,7 +72,8 @@ Quản lý nhóm quyền người dùng
                             <tfoot>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Quyền</th>
+                                    <th>Tên nhóm</th>
+                                    <th>Quyền hạn</th>
                                     <th>Ẩn/Hiện</th>
                                     <th></th>
                                 </tr>
@@ -86,13 +103,13 @@ Quản lý nhóm quyền người dùng
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
 

@@ -1,17 +1,20 @@
 <?php
 
 return [
-    'device_type' => [
-        0 => "Không xác định",
-        1 => "Máy Game",
-        2 => "Máy Phiếu",
-        3 => "Máy Thú",
-        4 => 'Video Game',
-        5 => 'Redemption',
-        6 => 'Bowling'
+    'role' => [
+        0 => "User",
+        1 => "Manager",
+        2 => "Super Admin",
+        3 => "CEO"
     ],
 
     'menus' => [
+        'dashboard' => [
+            'name' => 'Bảng điều khiển',
+            'icon' => 'fas fa-th',
+            'url' => '/',
+            'submenu' => []
+        ],
         'user_manage' => [
             'name' => 'Quản lý người dùng',
             'icon' => 'fas fa-users',

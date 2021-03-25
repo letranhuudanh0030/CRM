@@ -119,6 +119,10 @@
                         $('.type-' + id).attr('type-id', type_id)
                     }
                     $('#modal_device').modal('hide')
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cập nhật thiết bị thành công!'
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);

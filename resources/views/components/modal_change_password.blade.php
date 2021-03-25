@@ -79,6 +79,10 @@
             })
             .then(function(response){
                 $('#modal_change_password').modal('hide')
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Đổi mật khẩu thành công!'
+                })
             })
             .catch(function(error){
                 console.log(error);

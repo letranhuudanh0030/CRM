@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class BranchController extends Controller
 {
@@ -20,6 +21,9 @@ class BranchController extends Controller
             'name' => request()->name,
             'address' => request()->address
         ]);
+
+        Session::flash('success', 'Thêm chi nhánh thành công.');
+
         return response($branch, 200);
     }
 

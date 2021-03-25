@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index');
     Route::get('/task/{id}/detail', 'MaintenanceController@detail');
+    Route::post('/task/detail/update', 'MaintenanceController@update');
+    Route::post('/task/detail/success', 'MaintenanceController@change_success');
+    Route::post('/task/upload', 'MaintenanceController@upload');
+
+    Route::get('task/export', 'DashboardController@export');
+    Route::get('task/export_pdf', 'DashboardController@export_pdf');
+
     Route::group(['prefix' => 'devices', 'middleware' => 'auth.admin'], function () {
         Route::get('list', 'DeviceController@index');
         Route::post('store', 'DeviceController@store');
@@ -60,7 +67,7 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
         Route::post('check_email', 'UserController@check_email');
     });
     
-    Route::group(['prefix' => 'task', 'middleware' => 'auth.admin'], function () {
+    Route::group(['prefix' => 'task'], function () {
         Route::get('list', 'MaintenanceController@index');
         Route::post('store', 'MaintenanceController@store');
         Route::post('update', 'MaintenanceController@update');

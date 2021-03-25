@@ -35,7 +35,7 @@ Quản lý tài khoản
                                 <tr class="item-{{ $user->id }}">
                                     <td>{{ $user->id }}</td>
                                     <td class="name-{{ $user->id }}">{{ $user->name }}</td>
-                                    <td class="permission-{{ $user->id }}">{{ $user->permission->name }}</td>
+                                    <td class="permission-{{ $user->id }}">{{ $user->permission['name'] }}</td>
                                     <td class="phone-{{ $user->id }}">{{ $user->phone }}</td>
                                     <td class="email-{{ $user->id }}">{{ $user->email }}</td>
                                     <td>
@@ -98,13 +98,13 @@ Quản lý tài khoản
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
 {{-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>

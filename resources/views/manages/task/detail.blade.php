@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Chi tiết công việc</h3>
+                <h3 class="card-title text-uppercase">Chi tiết công việc <b>#{{ $task->id }}</b></h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -26,7 +26,7 @@
                                         <span class="info-box-text text-center text-dark font-weight-bold">Ngày yêu
                                             cầu</span>
                                         <span
-                                            class="info-box-number text-center  mb-0 text-primary">{{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</span>
+                                            class="info-box-number text-center mb-0 text-primary start-date">{{ $task->required_date ? date('d-m-Y H:i:s', strtotime($task->required_date)) : date('d-m-Y H:i:s', strtotime($task->created_at)) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                         <span class="info-box-text text-center text-dark font-weight-bold">Ngày hoàn
                                             thành</span>
                                         <span
-                                            class="info-box-number text-center  mb-0 text-danger">{{ date('d-m-Y H:i:s', strtotime($task->success_date)) }}</span>
+                                            class="info-box-number text-center  mb-0 text-danger end-date">{!! $task->success_date ? date('d-m-Y H:i:s', strtotime($task->success_date)) : '<span class="badge badge-secondary">Đang chờ cập nhật</span>' !!}</span>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                                 <label class="col-form-label">Thiết bị:</label>
                                             </div>
                                             <div class="col-12 col-sm-9">
-                                                <p>{{ $task->device->name }}</p>
+                                                <p class="device-name">{{ $task->device->name }}</p>
                                             </div>
                                         </div>
                                         <hr>
@@ -63,7 +63,7 @@
                                                 <label class="col-form-label">Chi nhánh:</label>
                                             </div>
                                             <div class="col-12 col-sm-9">
-                                                <p>{{ $task->branch->name }}</p>
+                                                <p class="branch-name">{{ $task->branch->name }}</p>
                                             </div>
                                         </div>
                                         <hr>
@@ -71,8 +71,8 @@
                                             <div class="col-12 col-sm-3">
                                                 <label class="col-form-label">Tình trạng hư hỏng:</label>
                                             </div>
-                                            <div class="col-12 col-sm-9">
-                                                {!! $task->device_damaged !!}
+                                            <div class="col-12 col-sm-9 device-damaged">
+                                                {!! $task->device_damaged ? $task->device_damaged : '<span class="badge badge-secondary">Đang chờ cập nhật</span>' !!}
                                             </div>
                                         </div>
                                         <hr>
@@ -80,7 +80,7 @@
                                             <div class="col-12 col-sm-3">
                                                 <label class="col-form-label">kết quả:</label>
                                             </div>
-                                            <div class="col-12 col-sm-9">
+                                            <div class="col-12 col-sm-9 result">
                                                 @switch($task->result)
                                                     @case(1)
                                                         <span class="badge bg-info">Đang xử lý</span>
@@ -88,8 +88,11 @@
                                                     @case(2)
                                                         <span class="badge bg-success">Đã hoàn thành</span>
                                                         @break
-                                                    @default
+                                                    @case(3)
                                                         <span class="badge bg-danger">Đang đặt hàng</span>
+                                                        @break
+                                                    @default
+                                                        <span class="badge badge-secondary">Đang chờ cập nhật</span>
                                                 @endswitch
                                             </div>
                                         </div>
@@ -98,8 +101,8 @@
                                             <div class="col-12 col-sm-3">
                                                 <label class="col-form-label">lưu ý:</label>
                                             </div>
-                                            <div class="col-12 col-sm-9">
-                                                {!! $task->note !!}
+                                            <div class="col-12 col-sm-9 note">
+                                                {!! $task->note ? $task->note : '<span class="badge badge-secondary">Đang chờ cập nhật</span>' !!}
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +119,7 @@
                                         <div class="show_image_device_damaged mt-2 row">
                                             @if ($task->image_device_damaged)
                                                 @foreach (explode(',', $task->image_device_damaged) as $key => $img)
-                                                <div class="border col-3">
+                                                <div class="col-3">
                                                     <a href="{{ $img }}" data-toggle="lightbox" data-title="Hình ảnh thiết bị hư hỏng {{ $key + 1 }}" data-gallery="gallery">
                                                         <img src="{{ $img }}" alt="" class="img-fluid">
                                                     </a>
@@ -140,14 +143,14 @@
                                         <div class="show_image_result row">
                                             @if ($task->image_result)
                                                 @foreach (explode(',', $task->image_result) as $key => $img)
-                                                <div class="border col-3">
+                                                <div class="col-3">
                                                     <a href="{{ $img }}" data-toggle="lightbox" data-title="Hình ảnh kết quả {{ $key + 1 }}" data-gallery="gallery">
                                                         <img src="{{ $img }}" alt="" class="img-fluid">
                                                     </a>
                                                 </div>
                                                 @endforeach
                                             @else
-                                                <p class="text-muted">Không có hình ảnh nào.</p>
+                                                <p class="text-muted">Không có hình ảnh nào.</p>    
                                             @endif
                                         </div>
                                     </div>
@@ -231,8 +234,14 @@
                                             {{ $task->creator->permission->name }}</a>
                                     </li>
                                 </ul>
-
                             </div>
+                        </div>
+                        <div>
+                            {{-- @if ($task->result != 2) --}}
+                                {{-- <button class="btn btn-success" id="update_date_sessucess"  {{ $task->result == 2 ? "disabled" : "" }}>Đã hoàn thành</button> --}}
+                                <button class="btn btn-primary" id="update_task_detail" data-toggle="modal"
+                                data-target="#modal_update_task_detail" data-title="Cập nhật công việc" data-ob="{{ $task }}" {{ $task->result == 2 ? "disabled" : "" }}>Cập nhật công việc</button>
+                            {{-- @endif --}}
                         </div>
                     </div>
                 </div>
@@ -252,6 +261,7 @@
 <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/ekko-lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 @endsection
 
 @section('linkjs')
@@ -260,24 +270,56 @@
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}"></script> --}}
 <script src="{{ asset('js/select2.full.min.js') }}"></script>
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script src="{{ asset('js/ekko-lightbox.min.js') }}"></script>
-<script defer>
-    $('#device_damaged, #note').summernote()
-    $('#result').select2({
-        theme: 'bootstrap4'
+<script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('js/dropzone.js') }}"></script>
+
+
+@include('components.modal_update_task_detail')
+
+<script>
+    $('#task_detail #update_date_sessucess').click(function(e){
+        axios.post('/task/detail/success',{
+            id: {{ $task->id }}
+        }).then(function(response){
+            console.log(response);
+            $('#task_detail .end-date').text(moment(new Date(response.data.success_date)).format('DD-MM-YYYY HH:mm:ss'))
+            let result = '';
+            switch (response.data.result) {
+                case 1:
+                    result = '<span class="badge bg-info">Đang xử lý</span>'
+                    break;
+                case 2:
+                    result = '<span class="badge bg-success">Đã hoàn thành</span>'
+                    break;
+                case 3:
+                    result = '<span class="badge bg-danger">Đang đặt hàng</span>'
+                    break;
+                default:
+                    result = '<span class="badge badge-secondary">Đang chờ cập nhật</span>'
+                    break;
+            }
+            $('#task_detail .result').html(result)
+            $('#update_date_sessucess, #update_task_detail').prop('disabled', true)
+
+        }).catch(function(error){
+            console.log(error);
+        })
     })
-    $('#result').val({{ $task->result }}).trigger('change')
 </script>
+
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PermissionController extends Controller
 {
@@ -16,14 +17,21 @@ class PermissionController extends Controller
 
     public function store()
     {
+        // dd(request()->role);
         Permission::create([
-            'name' => request()->name
+            'name' => request()->name,
+            'role' => request()->role
         ]);
+
+        Session::flash('success', 'Thêm nhóm người dùng thành công.');
     }
 
     public function update()
     {
-        Permission::where('id', request()->id)->update(['name' => request()->name]);
+        Permission::where('id', request()->id)->update([
+            'name' => request()->name,
+            'role' => request()->role
+            ]);
         $permission = Permission::findOrFail(request()->id);
         return response($permission, 200);
     }

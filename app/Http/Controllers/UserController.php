@@ -6,6 +6,7 @@ use App\Permission;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -29,6 +30,8 @@ class UserController extends Controller
             'permission_id' => request()->permission,
             'password' => Hash::make(request()->password)
         ]);
+
+        Session::flash('success', 'Thêm người dùng thành công.');
     }
 
     public function update()

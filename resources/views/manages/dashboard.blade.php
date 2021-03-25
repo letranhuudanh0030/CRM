@@ -2,7 +2,7 @@
 @section('content')
 <section id="dashboard">
     <div class="container-fluid">
-        @if (auth()->user()->permission_id == 1)
+        @if (auth()->user()->permission->role == 2)
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
@@ -73,10 +73,11 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title" style="line-height: 38px;">{{ $title }}</h3>
-                        
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <a href="/task/export" class="btn btn-primary export-excel">Tải Excel</a>
+                        <a href="/task/export_pdf" class="ml-1 btn btn-danger export-excel">Tải PDF</a>
                         <table id="data_table" class="table table-hover">
                             <thead>
                                 <tr>
@@ -92,7 +93,7 @@
                                 </tr>
                             </thead>
                             <tbody id="table-content">
-                                @if (auth()->user()->permission_id != 1)
+                                @if (auth()->user()->permission->role == 0)
                                     @php
                                         $tasks = $tasks->where('technicians_id', auth()->id())
                                     @endphp
@@ -111,11 +112,14 @@
                                             @case(2)
                                                 <td><span class="badge badge-success">Hoàn thành</span></td>
                                                 @break
-                                            @default
+                                            @case(3)
                                                 <td><span class="badge badge-danger">Đang đặt hàng</span></td>
+                                                @break
+                                            @default
+                                                <td><span class="badge badge-secondary">Đang chờ cập nhật</span></td>
                                         @endswitch
-                                        <td>{{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</td>
-                                        <td>{{ date('d-m-Y H:i:s', strtotime($task->success_date)) }}</td>
+                                        <td>{{ $task->required_date ? date('d-m-Y H:i:s', strtotime($task->required_date)) : date('d-m-Y H:i:s', strtotime($task->created_at)) }}</td>
+                                        <td>{!! $task->success_date ? date('d-m-Y H:i:s', strtotime($task->success_date)) : '<span class="badge badge-secondary">Đang chờ cập nhật</span>' !!}</td>
                                         <td><a href="/task/{{ $task->id }}/detail" class="btn btn-info">Xem chi tiết</a></td>
                                     </tr>
                                 @endforeach
@@ -157,12 +161,15 @@
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/buttons.colVis.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+
+
+
 @endsection

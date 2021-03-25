@@ -72,6 +72,10 @@
                 .then(function (response) {
                     $('.name-' + id).text(response.data.name)
                     $('#modal_device_type').modal('hide')
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cập nhật loại thiết bị thành công!'
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);
