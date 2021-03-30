@@ -18,8 +18,18 @@ Quản lý công việc bảo trì
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <a href="/task/export" class="btn btn-primary float-left">Tải Excel</a>
-                        <a href="/task/export_pdf" class="ml-1 btn btn-danger export-excel">Tải PDF</a>
+                        <div class="float-left" style="width: 30%">
+                            <select name="branch_export" id="branch_export" class="form-control">
+                                <option value="">Chọn chi nhánh</option>
+                                @foreach ($branchs as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- <a href="/task/export" class="btn btn-primary float-left">Tải Excel</a> --}}
+                        {{-- <a href="/task/export_pdf" class="ml-1 btn btn-danger export-excel" id="pdf_export">Tải PDF</a> --}}
+                        <button class="btn btn-primary float-left" id="excel_export">Tải Excel</button>
+                        <button class="ml-1 btn btn-danger export-excel" id="pdf_export">Tải PDF</button>
                         <table id="data_table" class="table table-hover">
                             <thead>
                                 <tr>
@@ -116,11 +126,60 @@ Quản lý công việc bảo trì
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
 
+<script>
+    $(function(){
+        $('#pdf_export').click(function(){
+            $branch_id = $('#branch_export').val();
+            axios.post('/task/export_pdf', {
+                branch_id: $branch_id
+            },{responseType: 'blob'}).then(function(response){
+                console.log();
+                let headerLine = response.headers['content-disposition']
+                let startFileNameIndex = headerLine.indexOf('"') + 1
+                let endFileNameIndex = headerLine.lastIndexOf('"');
+                let filename = headerLine.substring(startFileNameIndex, endFileNameIndex);
+                // console.log(filename, headerLine, startFileNameIndex, endFileNameIndex);
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+            }).catch(function(error){
+                console.log(error);
+            })
+        })
+
+        $('#excel_export').click(function(){
+            $branch_id = $('#branch_export').val();
+            axios.post('/task/export', {
+                branch_id: $branch_id
+            },{responseType: 'blob'}).then(function(response){
+                console.log();
+                let headerLine = response.headers['content-disposition']
+                let startFileNameIndex = headerLine.indexOf('"') + 1
+                let endFileNameIndex = headerLine.lastIndexOf('"');
+                let filename = headerLine.substring(startFileNameIndex, endFileNameIndex);
+                // console.log(filename, headerLine, startFileNameIndex, endFileNameIndex);
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', "file.xlsx");
+                document.body.appendChild(link);
+                link.click();
+            }).catch(function(error){
+                console.log(error);
+            })
+        })
+    })
+</script>
 
 @include('components.modal_task')
 @include('components.modal_device')
 @include('components.modal_branch')
 @include('components.modal_delete')
+
+    
 
 
 

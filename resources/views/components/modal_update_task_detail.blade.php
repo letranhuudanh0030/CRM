@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label>Ngày hoàn thành <span class="text-danger">(*)</span>:</label>
                         <div class="input-group date" id="endDate" data-target-input="nearest">
                             <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">

@@ -128,6 +128,9 @@
                     class="fas fa-th-large"></i></a>
         </li> --}}
         <li class="nav-item">
+            <button class="btn bg-gradient-info" type="button" data-toggle="modal"
+                                        data-target="#modal_change_password" data-object="{{ auth()->user() }}"
+                                        data-url="/user/update_password"><i class="fas fa-key"></i> Đổi mật khẩu</button>
             <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                 {{ __('Đăng xuất') }}

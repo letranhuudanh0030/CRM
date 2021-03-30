@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+
 Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index');
     Route::get('/task/{id}/detail', 'MaintenanceController@detail');
@@ -22,8 +24,10 @@ Route::group(['prefix' => '', 'middleware' => 'auth'], function () {
     Route::post('/task/detail/success', 'MaintenanceController@change_success');
     Route::post('/task/upload', 'MaintenanceController@upload');
 
-    Route::get('task/export', 'DashboardController@export');
-    Route::get('task/export_pdf', 'DashboardController@export_pdf');
+    // Route::get('task/export', 'DashboardController@export');
+    // Route::get('task/export_pdf', 'DashboardController@export_pdf');
+    Route::post('task/export_pdf', 'DashboardController@export_pdf');
+    Route::post('task/export', 'DashboardController@export');
 
     Route::group(['prefix' => 'devices', 'middleware' => 'auth.admin'], function () {
         Route::get('list', 'DeviceController@index');
@@ -85,3 +89,4 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

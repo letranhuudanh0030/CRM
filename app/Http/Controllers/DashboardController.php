@@ -35,17 +35,27 @@ class DashboardController extends Controller
     public function export() 
     {
         $dateCurrent = date('d_m_Y');
-        return Excel::download(new TasksExport, "tasks_$dateCurrent.xlsx");
+        $branch_id = request()->branch_id;
+        return Excel::download(new TasksExport($branch_id), "tasks_$dateCurrent.xlsx");
     }
 
     public function export_pdf()
     {
+
+        // dd(request()->all());
+        
         $dateCurrent = date('d_m_Y');
         // instantiate and use the dompdf class
        
         $dompdf = new Dompdf();
-
+        
         $tasks = Maintenance::with('device','branch','creator', 'technician')->get();
+        if(request()->branch_id){
+            $branch_id = request()->branch_id;
+            if($branch_id != null) {
+                $tasks = Maintenance::with('device','branch','creator', 'technician')->where('branch_id', $branch_id)->get();
+            } 
+        }
 
 
         $td = "";
@@ -142,6 +152,7 @@ class DashboardController extends Controller
 
         // Render the HTML as PDF
         $dompdf->render();
+        // dd($dompdf->output());     
 
         // Output the generated PDF to Browser
         return $dompdf->stream("tasks_$dateCurrent.pdf");

@@ -84,6 +84,7 @@
     @endif
     @yield('linkjs')
     <script src="{{ asset('js/script.js') }}"></script>  
+    @include('components.modal_change_password')
 </body>
 
 </html>

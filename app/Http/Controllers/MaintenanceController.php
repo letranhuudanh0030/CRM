@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\Device;
 use App\DeviceType;
+use App\Jobs\SendEmail;
 use App\Mail\TaskCreated;
 use App\Maintenance;
 use App\User;
@@ -39,7 +40,7 @@ class MaintenanceController extends Controller
         if(request()->start_date != "undefined"){
             $required_date = request()->start_date;
         } else {
-            $required_date = null;
+            $required_date = now();
         }
 
         if(request()->end_date != "undefined"){
@@ -64,23 +65,26 @@ class MaintenanceController extends Controller
             'image_result' => $this->urlImgProcess(request()->imgs_device_result)
         ]);
 
-        // $this->sendMail($task->id);
+        $this->sendMail($task->id);
     }
 
     public function update()
     {
         // dd(request()->all());
-
         if(request()->start_date != "undefined"){
             $required_date = request()->start_date;
         } else {
             $required_date = null;
         }
-
-        if(request()->end_date != "undefined"){
+        
+        if(request()->end_date != null){
             $success_date = request()->end_date;
         } else {
+            // dd(123);
             $success_date = null;
+            if(request()->result == 3){
+                $success_date = now();
+            }
         }
 
 
@@ -112,7 +116,11 @@ class MaintenanceController extends Controller
         $task->save();
 
         Session::flash('success', 'Cập nhật công việc thành công.');
-        // $this->sendMail($task->id);
+
+        if($task->result == 2){
+            // $this->sendMail($task->id);
+        }
+        
         return response($task, 200);
     }
 
@@ -173,12 +181,12 @@ class MaintenanceController extends Controller
     public function sendMail($taskId)
     {
         $task = Maintenance::findOrFail($taskId);
-        // dd($task);
-        Mail::to('danh.nambo@gmail.com')->send(new TaskCreated($task));
-        
-        Session::flash('success', 'Thêm công việc và gửi mail thành công.');
+        $mailAddress = "danh.nambo@gmail.com";
+        // Mail::to('danh.nambo@gmail.com')->queue(new TaskCreated($task));
+        $emailJob = new SendEmail($task, $mailAddress);
+        dispatch($emailJob);
 
-        // return redirect()->back();
+        Session::flash('success', 'Gửi mail thành công.');
     }
 
     public function change_success()

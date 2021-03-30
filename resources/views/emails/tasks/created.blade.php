@@ -1,5 +1,9 @@
 @component('mail::message')
-<h3>Công việc mới vừa được tạo: <b># {{ $task->id }}</b></h3>
+@if ($task->result)
+    <h3 style="color: green">Công việc <b># {{ $task->id }}</b> : Đã hoàn thành</h3>
+@else
+    <h3>Công việc mới vừa được tạo: <b># {{ $task->id }}</b></h3>
+@endif
 
 @component('mail::panel')
 <p><b>Thiết bị: </b><span>{{ $task->device->name }}</span></p>
@@ -18,8 +22,8 @@
 <p><b>Lưu ý: </b><span>{!! $task->note !!}</span></p>
 <p><b>Kỹ thuật viên: </b><span>{{ $task->technician->name }}</span></p>
 <p><b>Người yêu cầu: </b><span>{{ $task->creator->name }}</span></p>
-<p><b>Ngày yêu cầu: </b><span>{{ date('d-m-Y H:i:s', strtotime($task->required_date)) }}</span></p>
-<p><b>Ngày hoàn thành: </b><span>{{ date('d-m-Y H:i:s', strtotime($task->success_date)) }}</span></p>
+<p><b>Ngày yêu cầu: </b><span>{{ $task->required_date ? date('d-m-Y H:i:s', strtotime($task->required_date)) : date('d-m-Y H:i:s', strtotime($task->created_at)) }}</span></p>
+<p><b>Ngày hoàn thành: </b><span>{{ $task->success_date ? date('d-m-Y H:i:s', strtotime($task->success_date)) : "Đang chờ cập nhật" }}</span></p>
 @endcomponent
 @component('mail::panel')
 <h3>Hình ảnh thiết bị hư hỏng: </h3>

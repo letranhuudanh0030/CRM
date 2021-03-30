@@ -32,6 +32,7 @@ class TaskCreated extends Mailable
      */
     public function build()
     {
+        // dd(123);
         return $this->markdown('emails.tasks.created', [
             'url' => config('app.url')."/task/".$this->task->id."/detail"
         ]);

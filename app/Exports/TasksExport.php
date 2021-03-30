@@ -11,16 +11,32 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\Exportable;
 
-class TasksExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting
+
+class TasksExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, FromQuery
 {
+    use Exportable;
+
+    protected $branch_id;
+
+    public function __construct(int $branch_id = null)
+    {
+        $this->branch_id = $branch_id;
+    }
 
 
     public function collection()
     {
         $task = Maintenance::with('device','branch','creator', 'technician')->latest()->first();
-        // dd($task);
         return $task;
+    }
+
+    public function query()
+    {
+        if($this->branch_id != null){
+            return Maintenance::query()->where('branch_id', $this->branch_id);
+        }
     }
 
     public function map($task): array

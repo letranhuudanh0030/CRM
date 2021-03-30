@@ -140,10 +140,12 @@
                 .then(function (response) {
                     var path = $(location).attr('pathname');
                     var segment = path.split("/")
+                    console.log(segment)
                     if(segment[1] == 'devices'){
                         location.reload();
                         $('#modal_device').modal('hide')
                     } else {
+                        $('#modal_device').modal('hide')
                         $('#modal_task .modal-body #device').prepend('<option value="'+response.data.id+'" class="device-'+response.data.id+'">'+response.data.name+'</option>');
                     }
                 })

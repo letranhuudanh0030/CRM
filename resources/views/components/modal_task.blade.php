@@ -125,7 +125,7 @@
                         <label for="note" class="col-form-label">Lưu ý:</label>
                         <textarea id="note" name="note" cols="30" rows="10"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label>Ngày yêu cầu <span
                             class="text-danger">(*)</span>:</label>
                         <div class="input-group date" id="startDate" data-target-input="nearest">
@@ -136,7 +136,7 @@
                                 name="startDate" data-toggle="datetimepicker" id="start_date">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label>Ngày hoàn thành:</label>
                         <div class="input-group date" id="endDate" data-target-input="nearest">
                             <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
@@ -150,7 +150,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary btn-save">Lưu</button>
+                    <button type="button" class="btn btn-primary btn-save">Lưu</button>
                 </div>
             </div>
         </div>
@@ -160,6 +160,44 @@
 @include('components.modal_gallery')
 
 <script>
+
+    jQuery.validator.setDefaults({
+        debug: true,
+        errorClass: "invalid",
+        rules: {
+            device: {
+                required: true,
+            },
+            branch: {
+                required: true,
+            },
+            technician:{
+                required: true
+            },
+            startDate: {
+                required: true
+            }
+        },
+        messages: {
+            device: {
+                required: "Bắt buộc nhập",
+            },
+            branch: {
+                required: "Bắt buộc chọn",
+            },
+            technician:{
+                required: "Bắt buộc chọn"
+            },
+            startDate: {
+                required: "Bắt buộc chọn"
+            }
+        },
+    });
+
+
+
+
+
     $('#device, #branch, #technician, #result').select2({
         theme: 'bootstrap4'
     })
@@ -209,17 +247,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(file, response){
-                // if(response[])
                 $(`#input_${response['file']}`).val(response['url'])
                 console.log(response);
             },
-            // init: function () {
-            //     var mockFile = { name: "/uploads/image(0)_1614937938.jpg"};       
-            //     this.options.addedfile.call(this, mockFile);
-            //     this.options.thumbnail.call(this, mockFile, "/uploads/image(0)_1614937938.jpg");
-            //     mockFile.previewElement.classList.add('dz-success');
-            //     mockFile.previewElement.classList.add('dz-complete');
-            // }
         });
 
         $(`#${data.id} ~ .start`).click(function(e){
@@ -233,12 +263,6 @@
         })
 
     });
-
-
-
-
-   
-  
 
     // click image_device_damaged open filemanager
     $('.browser_image_device_damaged').click(function(){
@@ -297,122 +321,93 @@
         var imgs_device_damaged = modal.find('.modal-body #image_device_damaged');
         var imgs_device_result = modal.find('.modal-body #image_result');
         
-        modal.find('.modal-footer .btn-save').attr('action', action)    
+
 
         modal.find('.modal-footer .btn-save').off('click')
+        var form = $("#modalTask")
+        form.validate()
 
-        $('#modalTask').validate({
-        // debug: true,
-        errorClass: "invalid",
-        rules: {
-            device: {
-                required: true,
-            },
-            branch: {
-                required: true,
-            },
-            technician:{
-                required: true
-            },
-            startDate: {
-                required: true
-            }
-        },
-        messages: {
-            device: {
-                required: "Bắt buộc nhập",
-            },
-            branch: {
-                required: "Bắt buộc chọn",
-            },
-            technician:{
-                required: "Bắt buộc chọn"
-            },
-            startDate: {
-                required: "Bắt buộc chọn"
-            }
-        },
-
-        submitHandler: function(form) {
-            let btn_action = modal.find('.modal-footer .btn-save').attr('action')
-            if(btn_action == 'edit'){
-                axios.post('/task/update', {
-                    id: id,
-                    device_id: device.val(),
-                    device_damaged: device_damaged.val(),
-                    branch_id: branch.val(),
-                    technician_id: technician.val(),
-                    result: result.val(),
-                    note: note.val(),
-                    start_date: formatDateTime(start_date.val()),
-                    end_date: formatDateTime(end_date.val()),
-                    // imgs_device_damaged: imgs_device_damaged.val(),
-                    // imgs_device_result: imgs_device_result.val()
-                    imgs_device_damaged: $('#input_image_device_damaged').val(),
-                    imgs_device_result: $('#input_image_result').val()
-                })
-                .then(function (response) {
-                    // Change list
-                    $('.device-row-' + response.data.id).text(response.data.device.name)
-                    $('.branch-row-' + response.data.id).text(response.data.branch.name)
-                    $('.technician-row-' + response.data.id).text(response.data.technician.name)
-                    $('.creator-row-' + response.data.id).text(response.data.creator.name)
-                    $('.created-row-' + response.data.id).text(moment(new Date(response.data.required_date)).format('DD-MM-YYYY HH:mm:ss'))
-                    $('.success-row-' + response.data.id).text(moment(new Date(response.data.success_date)).format('DD-MM-YYYY HH:mm:ss'))
-
-                    // console.log(response.data);
-                    
-                    // change form
-                    ob.device_id = response.data.device_id;
-                    ob.branch_id = response.data.branch_id;
-                    ob.technicians_id = response.data.technicians_id;
-                    ob.device_damaged = response.data.device_damaged;
-                    ob.result = response.data.result;
-                    ob.note = response.data.note;
-                    ob.required_date = response.data.required_date;
-                    ob.success_date = response.data.success_date;
-                    ob.image_device_damaged = response.data.image_device_damaged;
-                    ob.image_result = response.data.image_result;
-                    $('#modal_task').modal('hide')
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cập nhật công việc thành công!'
+        modal.find('.modal-footer .btn-save').click(function(e){
+            if(form.valid()){
+                if(action == 'edit'){
+                    axios.post('/task/update', {
+                        id: ob.id,
+                        device_id: device.val(),
+                        device_damaged: device_damaged.val(),
+                        branch_id: branch.val(),
+                        technician_id: technician.val(),
+                        result: result.val(),
+                        note: note.val(),
+                        start_date: formatDateTime(start_date.val()),
+                        end_date: formatDateTime(end_date.val()),
+                        imgs_device_damaged: $('#input_image_device_damaged').val(),
+                        imgs_device_result: $('#input_image_result').val()
                     })
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            } else if(btn_action == "create"){
-                axios.post('/task/store', {
-                    device_id: device.val(),
-                    device_damaged: device_damaged.val(),
-                    branch_id: branch.val(),
-                    technician_id: technician.val(),
-                    result: result.val(),
-                    note: note.val(),
-                    start_date: formatDateTime(start_date.val()),
-                    end_date: formatDateTime(end_date.val()),
-                    // imgs_device_damaged: imgs_device_damaged.val(),
-                    // imgs_device_result: imgs_device_result.val(),
-                    imgs_device_damaged: $('#input_image_device_damaged').val(),
-                    imgs_device_result: $('#input_image_result').val()
-                })
-                .then(function (response) {
-                    location.reload();
-                    console.log(response);
-                    $('#modal_task').modal('hide')
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        // Change list
+                        $('.device-row-' + response.data.id).text(response.data.device.name)
+                        $('.branch-row-' + response.data.id).text(response.data.branch.name)
+                        $('.technician-row-' + response.data.id).text(response.data.technician.name)
+                        $('.creator-row-' + response.data.id).text(response.data.creator.name)
+                        $('.created-row-' + response.data.id).text(moment(new Date(response.data.required_date)).format('DD-MM-YYYY HH:mm:ss'))
+                        let success_date
+                        if(response.data.success_date){
+                            success_date = moment(new Date(response.data.success_date)).format('DD-MM-YYYY HH:mm:ss')
+                        } else {
+                            success_date = "<span class='badge badge-secondary'>Đang chờ cập nhật</span>"
+                        }
+                        $('.success-row-' + response.data.id).html(success_date)
+                    
+                        $('#modal_task').modal('hide')
+
+                        // change form
+                        ob.device_id = response.data.device_id;
+                        ob.branch_id = response.data.branch_id;
+                        ob.technicians_id = response.data.technicians_id;
+                        ob.device_damaged = response.data.device_damaged;
+                        ob.result = response.data.result;
+                        ob.note = response.data.note;
+                        ob.required_date = response.data.required_date;
+                        ob.success_date = response.data.success_date;
+                        ob.image_device_damaged = response.data.image_device_damaged;
+                        ob.image_result = response.data.image_result;
+
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Cập nhật công việc thành công!'
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                } else if(action == "create"){
+                    axios.post('/task/store', {
+                        device_id: device.val(),
+                        device_damaged: device_damaged.val(),
+                        branch_id: branch.val(),
+                        technician_id: technician.val(),
+                        result: result.val(),
+                        note: note.val(),
+                        start_date: formatDateTime(start_date.val()),
+                        end_date: formatDateTime(end_date.val()),
+                        imgs_device_damaged: $('#input_image_device_damaged').val(),
+                        imgs_device_result: $('#input_image_result').val()
+                    })
+                    .then(function (response) {
+                        location.reload();
+                        console.log(response);
+                        $('#modal_task').modal('hide')
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                }
             }
-            return false
-        }
-    });
+        })
 
 
         if(action == "edit"){
-            var id = ob.id;
             device.val(ob.device_id).trigger('change')
             branch.val(ob.branch_id).trigger('change')
             technician.val(ob.technicians_id).trigger('change')
@@ -427,12 +422,9 @@
 
             if(ob.success_date){
                 end_date.val(moment(new Date(ob.success_date)).format('DD/MM/YYYY HH:mm:ss'))
+            } else {
+                end_date.val("")
             }
-
-            // start_date.val(ob.required_date)
-            // end_date.val(ob.success_date)
-
-            
 
             modal.find('.modal-body .show_image_device_damaged').attr("class", "show_image_device_damaged show-img-"+ob.id)
             modal.find('.modal-body .show_image_result').attr("class", "show_image_result show-result-"+ob.id)
@@ -443,7 +435,6 @@
 
             if(ob.image_device_damaged != null){
                 let imgs_device_damaged = ob.image_device_damaged.split(',')
-                // modal.find('.modal-body #image_device_damaged').val(imgs_device_damaged)
                 
                 for (let i = 0; i < imgs_device_damaged.length; i++) {
                     const element = imgs_device_damaged[i];
@@ -459,7 +450,6 @@
             if(ob.image_result != null){
 
                 let imgs_result = ob.image_result.split(',')
-                // modal.find('.modal-body #image_result').val(imgs_result)
                 
                 for (let i = 0; i < imgs_result.length; i++) {
                     const element = imgs_result[i];
